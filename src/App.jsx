@@ -186,7 +186,7 @@ function App() {
           <div className="space-y-6 text-gray-200">
             <div>
               <h4 className="font-bold text-xl text-white">
-                Bachelor’s in Computer Science
+                Bachelor of Science in Information Technology
               </h4>
               <p>Dedan Kimathi University, 2023 - 2027 (Ongoing)</p>
             </div>
