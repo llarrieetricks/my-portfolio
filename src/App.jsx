@@ -13,13 +13,14 @@ import {
   FaLinux,
   FaGithub,
   FaLinkedin,
-  FaTwitter,
+  
   FaEnvelope,
   FaFilePdf,
   FaEye,
   FaDownload,
   FaTimes,
 } from "react-icons/fa";
+import { FiX } from "react-icons/fi";
 
 
 function App() {
@@ -401,7 +402,7 @@ function App() {
               rel="noopener noreferrer"
               className="hover:text-sky-400 transition"
             >
-              <FaTwitter />
+              <FiX />
             </a>
           </div>
         </div>
@@ -474,7 +475,7 @@ function App() {
                 rel="noopener noreferrer"
                 className="hover:text-sky-400 transition"
               >
-                <FaTwitter />
+                <FiX />
               </a>
             </div>
           </div>
