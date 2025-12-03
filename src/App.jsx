@@ -214,7 +214,7 @@ function App() {
               {
                 icon: <FaShieldAlt className="text-red-500 text-5xl mb-4" />,
                 title: "Cybersecurity",
-                desc: " Network Security",
+                desc: " Web Security,Network Security",
               },
               {
                 icon: (
