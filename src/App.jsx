@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import profile from "./assets/profile.jpeg";
+// Imported certificates placed in src/assets/
+import plpCertImg from "./assets/PLP cert.jpeg";
+import ibmCertPdf from "./assets/IBM cybersecurity certificate (Copy).pdf";
 import {
   FaHtml5,
   FaCss3Alt,
@@ -12,16 +15,61 @@ import {
   FaLinkedin,
   FaTwitter,
   FaEnvelope,
+  FaFilePdf,
+  FaEye,
+  FaDownload,
+  FaTimes,
 } from "react-icons/fa";
+
 
 function App() {
   const [scrolled, setScrolled] = useState(false);
+  const [selectedCert, setSelectedCert] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 30);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Education entries and scholarships/certificates
+  // Add certificate files to src/assets/ and set the `certPath` to the relative import path
+  // e.g. "/src/assets/certs/plp-certificate.pdf" or "/src/assets/certs/plp-certificate.png"
+  const education = [
+    {
+      degree: "Bachelor of Science in Information Technology",
+      institution: "Dedan Kimathi University",
+      dates: "2023 - Ongoing",
+      
+      scholarships: [],
+    },
+    {
+      degree: "Power Learn Project (PLP) Scholarship",
+      institution: "Power Learn Project",
+      dates: "Feb 2025 – Dec 6, 2025",
+      details: "Specialized in Full-Stack Web Development (MERN Stack).",
+      scholarships: [
+        {
+          name: "PLP Completion Certificate",
+          // Using imported asset URL from src/assets/
+          certPath: plpCertImg,
+        },
+      ],
+    },
+    {
+      degree: "IBM SkillsBuild Cybersecurity",
+      institution: "SkillUp / IBM SkillsBuild",
+      dates: "June 2024 - August 2024",
+      details: "Project-based learning in Cybersecurity and capstone submission.",
+      scholarships: [
+        {
+          name: "IBM SkillsBuild Completion Certificate",
+          certPath: ibmCertPdf,
+        },
+      ],
+    },
+  ];
 
   return (
     <div className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-sans scroll-smooth">
@@ -38,18 +86,22 @@ function App() {
             Hillary Maranga
           </h1>
           <ul className="hidden md:flex space-x-8 font-medium">
-            {["Home", "Skills", "Projects", "Education", "Contact"].map(
-              (link) => (
-                <li key={link}>
-                  <a
-                    href={`#${link.toLowerCase()}`}
-                    className="relative hover:text-blue-600 transition duration-300 after:content-[''] after:absolute after:w-0 after:h-[2px] after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-500 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full"
-                  >
-                    {link}
-                  </a>
-                </li>
-              )
-            )}
+            {[
+              "Home",
+              "Skills",
+              "Projects",
+              "Education",
+              "Contact",
+            ].map((link) => (
+              <li key={link}>
+                <a
+                  href={`#${link.toLowerCase()}`}
+                  className="relative hover:text-blue-600 transition duration-300 after:content-[''] after:absolute after:w-0 after:h-[2px] after:left-0 after:-bottom-1 after:bg-gradient-to-r after:from-blue-500 after:to-purple-500 after:transition-all after:duration-300 hover:after:w-full"
+                >
+                  {link}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
       </nav>
@@ -92,6 +144,52 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* Certificate Preview Modal */}
+      {modalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          onClick={() => setModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-5xl h-[80vh] bg-white dark:bg-gray-900 rounded-xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setModalOpen(false)}
+              className="absolute top-3 right-3 z-20 bg-white/10 hover:bg-white/20 text-white rounded-full p-2"
+              aria-label="Close preview"
+            >
+              <FaTimes className="text-xl" />
+            </button>
+
+            <div className="absolute top-3 left-3 z-20 flex gap-2">
+              <a
+                href={selectedCert}
+                download
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg text-sm"
+              >
+                <FaDownload /> Download
+              </a>
+            </div>
+
+            <div className="w-full h-full flex items-center justify-center bg-gray-100 dark:bg-gray-800">
+              {selectedCert && String(selectedCert).toLowerCase().endsWith(".pdf") ? (
+                <iframe
+                  src={selectedCert}
+                  title="Certificate PDF"
+                  className="w-full h-full"
+                  frameBorder="0"
+                />
+              ) : (
+                <img src={selectedCert} alt="Certificate" className="max-w-full max-h-full object-contain" />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Skills Section */}
       <section
@@ -184,21 +282,81 @@ function App() {
         <div className="max-w-6xl mx-auto px-4 text-center bg-black/50 rounded-2xl py-16">
           <h3 className="text-3xl font-bold mb-10 text-white">Education</h3>
           <div className="space-y-6 text-gray-200">
-            <div>
-              <h4 className="font-bold text-xl text-white">
-                Bachelor of Science in Information Technology
-              </h4>
-              <p>Dedan Kimathi University, 2023 - 2027 (Ongoing)</p>
-            </div>
-            <div>
-              <h4 className="font-bold text-xl text-white">
-                Power Learn Project (PLP) Scholarship
-              </h4>
-              <p>
-                Feb 2025 Cohort – Graduating Nov 2025. Specialized in Full-Stack
-                Web Development (MERN Stack).
-              </p>
-            </div>
+            {education.map((edu, idx) => (
+              <div
+                key={idx}
+                className="grid md:grid-cols-2 gap-8 items-start py-6 border-b border-white/10 last:border-0"
+              >
+                {/* Left: degree / institution */}
+                <div className="text-left">
+                  <h4 className="font-bold text-xl text-white">{edu.degree}</h4>
+                  <p className="mt-1 text-gray-200">{edu.institution}, {edu.dates}</p>
+                  {edu.details && <p className="mt-3 text-gray-300">{edu.details}</p>}
+                </div>
+
+                {/* Right: certificates */}
+                <div>
+                  {edu.scholarships && edu.scholarships.length > 0 ? (
+                    <div>
+                      <h5 className="font-semibold text-white mb-4">Certificates & Scholarships</h5>
+                      <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
+                        {edu.scholarships.map((s, j) => (
+                          <div
+                            key={j}
+                            className="flex items-center gap-4 bg-white/5 rounded-xl p-3 border border-white/5 hover:shadow-lg transition"
+                          >
+                            <div className="w-28 h-20 flex-shrink-0 rounded-md overflow-hidden bg-white/10 flex items-center justify-center">
+                              {s.certPath ? (
+                                String(s.certPath).toLowerCase().endsWith(".pdf") ? (
+                                  <FaFilePdf className="text-red-400 text-3xl" />
+                                ) : (
+                                  <img src={s.certPath} alt={s.name} className="w-full h-full object-cover" />
+                                )
+                              ) : (
+                                <div className="w-full h-full bg-gray-700" />
+                              )}
+                            </div>
+
+                            <div className="flex-1">
+                              <div className="font-medium text-white">{s.name}</div>
+                              <div className="text-sm text-gray-300 mt-1">{edu.institution}</div>
+                              <div className="mt-3 flex items-center gap-2">
+                                {s.certPath ? (
+                                  <>
+                                    <button
+                                      onClick={() => {
+                                        setSelectedCert(s.certPath);
+                                        setModalOpen(true);
+                                      }}
+                                      className="inline-flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-md text-sm"
+                                    >
+                                      <FaEye /> Preview
+                                    </button>
+                                    <a
+                                      href={s.certPath}
+                                      download
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center gap-2 px-3 py-1.5 bg-white/10 text-white rounded-md text-sm border border-white/10"
+                                    >
+                                      <FaDownload /> Download
+                                    </a>
+                                  </>
+                                ) : (
+                                  <span className="text-sm text-gray-400">(no file)</span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-sm text-gray-300">No certificates recorded.</div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -268,17 +426,17 @@ function App() {
               Quick Links
             </h4>
             <div className="grid grid-cols-2 gap-2 text-gray-600 dark:text-gray-400">
-              {["Home", "Skills", "Projects", "Education", "Contact"].map(
-                (link, idx) => (
-                  <a
-                    key={idx}
-                    href={`#${link.toLowerCase()}`}
-                    className="hover:text-blue-600 transition"
-                  >
-                    {link}
-                  </a>
-                )
-              )}
+              {[
+                "Home",
+                "Skills",
+                "Projects",
+                "Education",
+                "Contact",
+              ].map((link) => (
+                <a key={link} href={`#${link.toLowerCase()}`} className="hover:text-blue-600 transition">
+                  {link}
+                </a>
+              ))}
             </div>
           </div>
 
